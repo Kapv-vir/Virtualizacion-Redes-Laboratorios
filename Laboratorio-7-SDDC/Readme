@@ -1,0 +1,7 @@
+Laboratorio 7 - Centro de Datos Definido por Software (SDDC)
+
+Este laboratorio consiste en la configuración de una red interna en Proxmox utilizando Linux Bridges.
+
+Se creó un bridge adicional (vmbr1) para simular una red aislada entre dos máquinas virtuales Ubuntu.
+
+Las máquinas virtuales se configuraron con direcciones IP estáticas dentro de la misma subred para comprobar conectividad interna mediante ping.
