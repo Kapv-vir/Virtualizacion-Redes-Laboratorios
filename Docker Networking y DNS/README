@@ -1,0 +1,98 @@
+# Networking Lógico y Persistencia en Docker
+
+## Descripción
+
+En esta práctica se realizó la configuración de redes en Docker utilizando una red personalizada para permitir la comunicación entre 
+contenedores mediante DNS interno.
+
+También se realizó una demostración de persistencia de datos utilizando volúmenes en MariaDB, comprobando la diferencia entre un contenedor 
+sin volumen y uno con volumen persistente.
+
+---
+
+# Topología del laboratorio
+
+```
+             ┌──────────────────┐
+             │  red-negocio     │
+             └──────────────────┘
+                   │
+        ┌──────────┴──────────┐
+        │                     │
+ ┌──────────────┐      ┌──────────────┐
+ │   Alpine     │      │   MariaDB    │
+ │ (Frontend)   │ ---> │    mi-db     │
+ └──────────────┘      └──────────────┘
+
+```
+# COMANDOS USADOS
+```
+Crear red Docker
+docker network create red-negocio
+
+Crear contenedor MariaDB
+docker run -d --name mi-db --network red-negocio -e MYSQL_ROOT_PASSWORD=secreto mariadb:latest
+
+Crear contenedor Alpine
+docker run -it --rm --network red-negocio alpine ash
+
+Probar comunicación
+ping mi-db
+
+```
+Persistencia sin volumen
+```
+Crear contenedor sin volumen
+docker run -d --name db-test -e MYSQL_ROOT_PASSWORD=12345 mariadb:latest
+
+Acceder a MariaDB
+docker exec -it db-test mariadb -u root -p
+
+Crear datos
+CREATE DATABASE prueba;
+USE prueba;
+CREATE TABLE datos (id INT);
+INSERT INTO datos VALUES (1);
+
+Eliminar contenedor
+docker rm -f db-test
+
+```
+Persistencia con volumen
+```
+Crear volumen
+docker volume create mi-data-db
+
+Crear contenedor con volumen
+docker run -d --name db-test2 -v mi-data-db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12345 mariadb:latest
+
+Verificar volumen
+docker volume inspect mi-data-db
+
+
+```
+# Reflexión
+```
+
+El uso de volúmenes en Docker es fundamental para mantener la persistencia de datos en aplicaciones reales, especialmente en bases de datos. 
+Cuando un contenedor no utiliza volúmenes, toda la información almacenada se pierde al eliminar el contenedor.
+
+Por otro lado, los volúmenes permiten separar los datos del ciclo de vida del contenedor, garantizando que la información permanezca disponible 
+incluso después de recrear el servicio.
+
+Además, el uso de redes personalizadas y DNS interno facilita la comunicación entre microservicios sin depender de direcciones IP estáticas.
+
+```
+# Referencias
+```
+Docker Inc. (2024). Docker documentation. Docker. https://docs.docker.com/
+
+```
+# Videos
+```
+
+Parte 1:
+https://youtu.be/tGrm_V9YJc8
+
+Parte 2:
+https://youtu.be/blDUKDPGwOc
