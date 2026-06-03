@@ -27,6 +27,10 @@ para inspeccionar almacenamiento, redes virtuales y consumo de recursos del sist
 - Video de demostración práctica.
 - Archivo diagnostico-hipervisor.md con resultados de auditoría.
 
+## Enlace al video
+
+https://www.youtube.com/watch?v=8zmEl0hzH24&authuser=1
+
 ## Referencias
 
 Corbet, J., Rubini, A., & Kroah-Hartman, G. (2026). *Linux device drivers: Kernel networking and bridge 
